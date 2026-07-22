@@ -5,7 +5,7 @@ library(ggplot2)
 #Read in csv of lake washington data
 onerka<-read.csv("Onerka_LWA.csv")
 onerka<-onerka[1:75,1:13]
-View(onerka)
+
 onerka$length <- as.numeric(onerka$length)
 #sets color palette
 colors<-c("darkorange", "firebrick", "darkblue", "black")
@@ -29,11 +29,11 @@ onerka_geno <- subset(
   onerka,
   !is.na(genotype))
 
-ggplot(
+figure2<-ggplot(
   onerka_geno,
   aes(x = d13C, y = d15N, color = genotype)
 ) +
-  geom_point(size = 2) +
+  geom_point(size = 1) +
   stat_ellipse(na.rm = TRUE) +
   scale_color_manual(values = colors) +
   theme_classic() +
@@ -43,6 +43,7 @@ ggplot(
     color = "Genotype"
   )
 
+ggsave("figure2.jpg", width = 6, height = 4, dpi = 300)
 
 onerka_geno <- subset(
   onerka,
@@ -52,11 +53,11 @@ onerka_geno_length <- subset(
   onerka_geno,
   !is.na(length))
 # plotting against length
-ggplot(
+figure3<-ggplot(
   onerka_geno_length,
   aes(x = length, y = d15N, color = genotype)
 ) +
-  geom_point(size = 2) +
+  geom_point(size = 1) +
   stat_ellipse(na.rm = TRUE) +
   scale_color_manual(values = colors) +
   theme_classic() +
@@ -65,6 +66,8 @@ ggplot(
     y = expression(delta^{15}*N),
     color = "Genotype"
   )
+
+ggsave("figure3.jpg", width = 6, height = 4, dpi = 300)
 # subset anadromous fish to calculate statistics
 anad <- subset(onerka, lifehistory == "Anadromous")
 
